@@ -76,6 +76,32 @@ class SiteStructureTests(unittest.TestCase):
         ):
             self.assertTrue(path.is_file(), str(path))
 
+    def test_hero_content(self):
+        text = load_page().text
+        for phrase in [
+            "Benjamín Valenzuela",
+            "Ingeniería Civil en Informática",
+            "Universidad del Bío-Bío",
+            "San Carlos",
+            "20 años",
+            "Flutter",
+            "Python",
+            "Linux",
+        ]:
+            self.assertIn(phrase, text)
+
+    def test_glass_tokens_fallback_and_motion(self):
+        css = CSS.read_text(encoding="utf-8").lower()
+        for token in [
+            "--violet",
+            "--mint",
+            "backdrop-filter",
+            "-webkit-backdrop-filter",
+            "@supports not",
+            "prefers-reduced-motion",
+        ]:
+            self.assertIn(token, css)
+
 
 if __name__ == "__main__":
     unittest.main()

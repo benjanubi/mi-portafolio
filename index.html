@@ -12,7 +12,13 @@
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
 
-  <header class="site-header">
+  <div class="ambient" aria-hidden="true">
+    <span class="orb orb--violet"></span>
+    <span class="orb orb--indigo"></span>
+    <span class="orb orb--lilac"></span>
+  </div>
+
+  <header class="site-header" data-header>
     <nav class="nav glass" aria-label="Navegación principal">
       <a class="nav__brand" href="#inicio" aria-label="Benjamín Valenzuela, ir al inicio">
         <span class="nav__monogram">BV</span>
@@ -31,8 +37,73 @@
 
   <main id="contenido">
     <section id="inicio" class="hero">
-      <p class="eyebrow">Portafolio · 2026</p>
-      <h1>Benjamín Valenzuela</h1>
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="eyebrow">Portafolio · 2026</p>
+          <h1 class="hero__title">
+            <span>Benjamín</span>
+            <span class="hero__title-accent">Valenzuela</span>
+          </h1>
+          <p class="hero__lead">
+            Desarrollo software con foco en lo útil: aplicaciones móviles,
+            herramientas de escritorio y sitios web.
+          </p>
+          <p class="hero__support">
+            Estudiante de Ingeniería Civil en Informática en la Universidad
+            del Bío-Bío. San Carlos, Región de Ñuble.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#proyectos">
+              Ver proyectos <span aria-hidden="true">↘</span>
+            </a>
+            <a class="btn btn--ghost" href="#contacto">Hablemos</a>
+          </div>
+          <p class="hero__location">
+            <span class="status-dot" aria-hidden="true"></span>
+            San Carlos, Chile · 20 años
+          </p>
+        </div>
+
+        <aside class="hero-card glass glass--interactive" aria-label="Resumen del perfil">
+          <div class="hero-card__top">
+            <span class="hero-card__monogram">BV</span>
+            <span class="hero-card__label">Perfil</span>
+          </div>
+          <p class="hero-card__name">Benjamín Ignacio<br>Valenzuela Muñoz</p>
+          <p class="hero-card__role">Desarrollador de software</p>
+          <dl class="hero-card__facts">
+            <div>
+              <dt>Edad</dt>
+              <dd>20 años</dd>
+            </div>
+            <div>
+              <dt>Ubicación</dt>
+              <dd>San Carlos, Chile</dd>
+            </div>
+            <div>
+              <dt>Formación</dt>
+              <dd>Ingeniería Civil en Informática</dd>
+            </div>
+            <div>
+              <dt>Universidad</dt>
+              <dd>Universidad del Bío-Bío</dd>
+            </div>
+          </dl>
+          <ul class="tag-list" aria-label="Tecnologías principales">
+            <li>Flutter</li>
+            <li>Python</li>
+            <li>Linux</li>
+          </ul>
+          <a class="hero-card__link" href="#sobre-mi">
+            Conóceme <span aria-hidden="true">→</span>
+          </a>
+        </aside>
+      </div>
+
+      <a class="hero__scroll" href="#sobre-mi" aria-label="Bajar a Sobre mí">
+        <span aria-hidden="true"></span>
+        Scroll
+      </a>
     </section>
 
     <section id="sobre-mi" class="section">
