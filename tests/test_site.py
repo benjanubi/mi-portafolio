@@ -207,6 +207,11 @@ class SiteStructureTests(unittest.TestCase):
         for placeholder in ["tu-correo", "ejemplo.com", "lorem ipsum", "todo:", "tbd"]:
             self.assertNotIn(placeholder, html)
 
+    def test_project_note_has_no_unverified_promises(self):
+        html = INDEX.read_text(encoding="utf-8")
+        self.assertIn("Proyecto local", html)
+        self.assertNotIn("se añadirán", html)
+
     def test_accessibility_and_motion_css(self):
         css = CSS.read_text(encoding="utf-8").lower()
         for token in [
