@@ -326,19 +326,16 @@
         frame = 0;
       }
 
-      card.addEventListener("pointermove", function (event) {
+      function updateGlow(event) {
         const rect = card.getBoundingClientRect();
         if (!rect.width || !rect.height) return;
         px = ((event.clientX - rect.left) / rect.width) * 100;
         py = ((event.clientY - rect.top) / rect.height) * 100;
         if (!frame) frame = window.requestAnimationFrame(paint);
-      });
+      }
 
-      card.addEventListener("pointerleave", function () {
-        px = 50;
-        py = 0;
-        if (!frame) frame = window.requestAnimationFrame(paint);
-      });
+      card.addEventListener("pointermove", updateGlow);
+      card.addEventListener("pointerenter", updateGlow);
     });
   }
 
