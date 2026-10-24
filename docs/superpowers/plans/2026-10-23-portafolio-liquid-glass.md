@@ -38,7 +38,7 @@
 
 ## Tareas
 
-### Tarea 1: Estructura base, tokens y arnés de pruebas
+### Task 1: Estructura base, tokens y arnés de pruebas
 
 **Files:**
 - Create: `index.html`
@@ -159,7 +159,7 @@ git commit -m "chore: scaffold static portfolio"
 
 ---
 
-### Tarea 2: Sistema liquid glass, cabecera y hero
+### Task 2: Sistema liquid glass, cabecera y hero
 
 **Files:**
 - Modify: `index.html`
@@ -243,7 +243,7 @@ git commit -m "feat: add liquid glass hero and navigation"
 
 ---
 
-### Tarea 3: Sobre mí y habilidades
+### Task 3: Sobre mí y habilidades
 
 **Files:**
 - Modify: `index.html`
@@ -317,7 +317,7 @@ git commit -m "feat: add about and skills sections"
 
 ---
 
-### Tarea 4: Proyectos y diálogos de detalle
+### Task 4: Proyectos y diálogos de detalle
 
 **Files:**
 - Modify: `index.html`
@@ -447,7 +447,7 @@ git commit -m "feat: add project cards and detail dialogs"
 
 ---
 
-### Tarea 5: Contacto con iconos de marca y copia de correo
+### Task 5: Contacto con iconos de marca y copia de correo
 
 **Files:**
 - Modify: `index.html`
@@ -531,7 +531,7 @@ git commit -m "feat: add branded contact section and copy email"
 
 ---
 
-### Tarea 6: Interacciones, responsive y auditoría final
+### Task 6: Interacciones, responsive y auditoría final
 
 **Files:**
 - Modify: `index.html`
