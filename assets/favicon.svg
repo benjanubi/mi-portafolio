@@ -1,11 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#8b2be2"/>
       <stop offset="1" stop-color="#2a1550"/>
     </linearGradient>
+    <radialGradient id="glow" cx="32" cy="28" r="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#b06bff" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#b06bff" stop-opacity="0"/>
+    </radialGradient>
   </defs>
   <rect width="64" height="64" rx="18" fill="#08040f"/>
-  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#g)"/>
-  <text x="32" y="41" fill="#f5f0ff" font-family="Segoe UI, sans-serif" font-size="22" font-weight="700" text-anchor="middle">BV</text>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#tile)"/>
+  <circle cx="32" cy="30" r="25" fill="url(#glow)"/>
+  <g>
+    <ellipse cx="15.5" cy="19" rx="9" ry="11.5" transform="rotate(-32 15.5 19)" fill="#2b1b17"/>
+    <ellipse cx="48.5" cy="19" rx="9" ry="11.5" transform="rotate(32 48.5 19)" fill="#2b1b17"/>
+    <ellipse cx="16" cy="19.5" rx="4.6" ry="6.2" transform="rotate(-32 16 19.5)" fill="#f7e3bc"/>
+    <ellipse cx="48" cy="19.5" rx="4.6" ry="6.2" transform="rotate(32 48 19.5)" fill="#f7e3bc"/>
+  </g>
+  <circle cx="32" cy="37" r="17" fill="#eab27a" stroke="#2b1b17" stroke-width="2.2"/>
+  <ellipse cx="32" cy="44.5" rx="9.5" ry="6" fill="#fbe9c8"/>
+  <circle cx="19.5" cy="42" r="4.4" fill="#e9826f"/>
+  <circle cx="44.5" cy="42" r="4.4" fill="#e9826f"/>
+  <circle cx="25.5" cy="34" r="3.1" fill="#241512"/>
+  <circle cx="38.5" cy="34" r="3.1" fill="#241512"/>
+  <circle cx="26.6" cy="33" r="1.1" fill="#fff7ec"/>
+  <circle cx="39.6" cy="33" r="1.1" fill="#fff7ec"/>
+  <path d="M30.7 43h2.6" stroke="#241512" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M32 43v1.4M32 44.4c-.9.9-2.1.8-2.9 0M32 44.4c.9.9 2.1.8 2.9 0" fill="none" stroke="#241512" stroke-width="1.2" stroke-linecap="round"/>
+  <g stroke="#241512" stroke-width="1.5" stroke-linecap="round">
+    <path d="M12.5 38.5h5.5M13 43l5.2-.8"/>
+    <path d="M51.5 38.5h-5.5M51 43l-5.2-.8"/>
+  </g>
 </svg>

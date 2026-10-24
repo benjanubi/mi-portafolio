@@ -11,12 +11,14 @@ Haz doble clic en `index.html` o ábrelo con tu navegador. No necesitas instalar
 - `index.html`: contenido y estructura de la página.
 - `css/styles.css`: sistema visual, efecto liquid glass, animaciones y responsive.
 - `js/script.js`: navegación activa, revelados, diálogos de proyectos y copia de correo.
-- `assets/favicon.svg`: icono del sitio.
+- `assets/favicon.svg`: icono del sitio inspirado en Dedenne.
+- `assets/pfp.jpg`: foto usada como avatar en la navegación y en la tarjeta de perfil.
 - `tests/`: verificaciones de estructura, contenido y datos de proyectos.
 
 ## Editar contenido
 
 - Los textos principales están en `index.html`.
+- El avatar se toma de `assets/pfp.jpg`. El encuadre se ajusta con `--avatar-zoom` y `object-position` en `css/styles.css`.
 - Los datos de los proyectos se editan en el objeto `PROJECTS` de `js/script.js`. Cada entrada incluye título, fecha, categoría, descripción, detalle y tecnologías.
 - Los enlaces y datos de contacto están en la sección `#contacto` del HTML. Si cambias el correo, actualízalo también en `initCopyEmail()` dentro de `js/script.js`.
 - El año del pie de página está escrito directamente en `index.html`.

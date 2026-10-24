@@ -1,5 +1,6 @@
 from html.parser import HTMLParser
 from pathlib import Path
+import re
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -72,9 +73,47 @@ class SiteStructureTests(unittest.TestCase):
             CSS,
             JS,
             ROOT / "assets" / "favicon.svg",
+            ROOT / "assets" / "pfp.jpg",
             ROOT / "README.md",
         ):
             self.assertTrue(path.is_file(), str(path))
+
+    def test_avatar_photo_replaces_initials(self):
+        page = load_page()
+        avatars = [
+            attrs
+            for tag, attrs in page.tags
+            if tag == "img" and attrs.get("class") == "avatar__img"
+        ]
+        self.assertEqual(len(avatars), 2)
+        for attrs in avatars:
+            self.assertEqual(attrs.get("src"), "assets/pfp.jpg")
+            self.assertEqual(attrs.get("alt"), "")
+        self.assertNotIn("BV", page.text)
+
+    def test_avatar_zoom_is_tighter_in_navigation(self):
+        css = CSS.read_text(encoding="utf-8")
+        self.assertIn("object-fit: cover", css)
+        self.assertIn("scale(var(--avatar-zoom))", css)
+        nav = re.search(r"\.nav__monogram\s*\{([^}]*)\}", css, re.S)
+        hero = re.search(r"\.hero-card__monogram\s*\{([^}]*)\}", css, re.S)
+        self.assertIsNotNone(nav)
+        self.assertIsNotNone(hero)
+        nav_zoom = re.search(r"--avatar-zoom:\s*([\d.]+)", nav.group(1))
+        hero_zoom = re.search(r"--avatar-zoom:\s*([\d.]+)", hero.group(1))
+        self.assertIsNotNone(nav_zoom)
+        self.assertIsNotNone(hero_zoom)
+        self.assertGreater(float(nav_zoom.group(1)), float(hero_zoom.group(1)))
+        self.assertNotIn("var(--violet)", nav.group(1))
+        self.assertNotIn("var(--violet)", hero.group(1))
+
+    def test_favicon_is_dedenne_inspired(self):
+        svg = (ROOT / "assets" / "favicon.svg").read_text(encoding="utf-8")
+        self.assertNotIn(">BV<", svg)
+        lowered = svg.lower()
+        for color in ("#8b2be2", "#eab27a", "#e9826f"):
+            self.assertIn(color, lowered)
+        self.assertIn('viewBox="0 0 64 64"', svg)
 
     def test_hero_content(self):
         text = load_page().text
