@@ -207,6 +207,28 @@ class SiteStructureTests(unittest.TestCase):
         for placeholder in ["tu-correo", "ejemplo.com", "lorem ipsum", "todo:", "tbd"]:
             self.assertNotIn(placeholder, html)
 
+    def test_accessibility_and_motion_css(self):
+        css = CSS.read_text(encoding="utf-8").lower()
+        for token in [
+            "skip-link",
+            "focus-visible",
+            "scroll-margin-top",
+            "overflow-x",
+            "@media (max-width",
+            "prefers-reduced-motion",
+        ]:
+            self.assertIn(token, css)
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("IntersectionObserver", js)
+        self.assertIn("aria-current", js)
+        self.assertIn("matchMedia", js)
+
+    def test_no_external_runtime_dependencies(self):
+        html = INDEX.read_text(encoding="utf-8").lower()
+        self.assertNotIn('<script src="http', html)
+        self.assertNotIn('rel="stylesheet" href="http', html)
+        self.assertNotIn("@import url(http", CSS.read_text(encoding="utf-8").lower())
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,6 +1,11 @@
 (function () {
   "use strict";
 
+  const motionQuery =
+    typeof window !== "undefined" && typeof window.matchMedia === "function"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)")
+      : { matches: false };
+
   const PROJECTS = {
     "cosecha-berries": {
       title: "cosecha_berries",
@@ -206,8 +211,174 @@
     });
   }
 
+  function initHeader() {
+    const header = document.querySelector(".site-header");
+    if (!header) return;
+
+    let ticking = false;
+
+    function update() {
+      header.classList.toggle("is-scrolled", window.scrollY > 24);
+      ticking = false;
+    }
+
+    update();
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      },
+      { passive: true }
+    );
+  }
+
+  function initNavObserver() {
+    const links = Array.prototype.slice.call(
+      document.querySelectorAll('.nav__links a[href^="#"]')
+    );
+    if (!links.length) return;
+
+    const sections = [];
+    links.forEach(function (link) {
+      const id = link.getAttribute("href").slice(1);
+      const section = document.getElementById(id);
+      if (section) sections.push({ link: link, section: section });
+    });
+    if (!sections.length) return;
+
+    function setActive(activeLink) {
+      links.forEach(function (link) {
+        const isActive = link === activeLink;
+        link.classList.toggle("is-active", isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "page");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    if (typeof IntersectionObserver !== "function") {
+      setActive(sections[0].link);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          const match = sections.find(function (item) {
+            return item.section === entry.target;
+          });
+          if (match) setActive(match.link);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+    );
+
+    sections.forEach(function (item) {
+      observer.observe(item.section);
+    });
+  }
+
+  function initReveal() {
+    const items = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+    if (!items.length) return;
+
+    if (motionQuery.matches || typeof IntersectionObserver !== "function") {
+      items.forEach(function (item) {
+        item.classList.add("is-visible");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      function (entries, currentObserver) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          currentObserver.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -6% 0px" }
+    );
+
+    items.forEach(function (item) {
+      observer.observe(item);
+    });
+  }
+
+  function initPointerGlow() {
+    if (motionQuery.matches) return;
+
+    const cards = document.querySelectorAll(".glass--interactive");
+
+    cards.forEach(function (card) {
+      let frame = 0;
+      let px = 50;
+      let py = 0;
+
+      function paint() {
+        card.style.setProperty("--mx", px.toFixed(2) + "%");
+        card.style.setProperty("--my", py.toFixed(2) + "%");
+        frame = 0;
+      }
+
+      card.addEventListener("pointermove", function (event) {
+        const rect = card.getBoundingClientRect();
+        if (!rect.width || !rect.height) return;
+        px = ((event.clientX - rect.left) / rect.width) * 100;
+        py = ((event.clientY - rect.top) / rect.height) * 100;
+        if (!frame) frame = window.requestAnimationFrame(paint);
+      });
+
+      card.addEventListener("pointerleave", function () {
+        px = 50;
+        py = 0;
+        if (!frame) frame = window.requestAnimationFrame(paint);
+      });
+    });
+  }
+
+  function initAmbient() {
+    if (motionQuery.matches) return;
+
+    const orbs = Array.prototype.slice.call(document.querySelectorAll(".orb"));
+    if (!orbs.length) return;
+
+    const rates = [0.05, -0.035, 0.025];
+    let ticking = false;
+
+    function update() {
+      const offset = window.scrollY;
+      orbs.forEach(function (orb, index) {
+        const rate = rates[index % rates.length];
+        orb.style.transform = "translate3d(0, " + (offset * rate).toFixed(1) + "px, 0)";
+      });
+      ticking = false;
+    }
+
+    update();
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(update);
+      },
+      { passive: true }
+    );
+  }
+
   function init() {
     document.documentElement.classList.add("js");
+    initHeader();
+    initNavObserver();
+    initReveal();
+    initPointerGlow();
+    initAmbient();
     initProjectDialogs();
     initCopyEmail();
   }

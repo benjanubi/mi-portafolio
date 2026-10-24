@@ -165,7 +165,16 @@ h3 {
   margin-inline: auto;
   padding: 10px 12px 10px 16px;
   border-radius: var(--radius-pill);
+  transition: box-shadow 250ms ease, border-color 250ms ease, background-color 250ms ease;
 }
+
+.site-header.is-scrolled .nav {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
 
 .glass {
   position: relative;
@@ -208,6 +217,37 @@ h3 {
 .glass > * {
   position: relative;
   z-index: 1;
+}
+
+.js .reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 620ms ease,
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.skills-grid > .reveal:nth-child(2),
+.projects-grid > .reveal:nth-child(2) {
+  transition-delay: 70ms;
+}
+
+.skills-grid > .reveal:nth-child(3),
+.projects-grid > .reveal:nth-child(3) {
+  transition-delay: 140ms;
+}
+
+.projects-grid > .reveal:nth-child(4) {
+  transition-delay: 210ms;
+}
+
+.about-side > .reveal:nth-child(2) {
+  transition-delay: 90ms;
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
@@ -563,6 +603,7 @@ h3 {
   max-width: var(--container);
   margin-inline: auto;
   padding-block: clamp(5rem, 9vw, 8rem);
+  scroll-margin-top: 110px;
 }
 
 .section__head {
@@ -1412,6 +1453,16 @@ body.dialog-open {
   }
 }
 
+@media (max-width: 900px) {
+  .nav__links {
+    display: none;
+  }
+
+  .nav__cta {
+    margin-left: auto;
+  }
+}
+
 @media (max-width: 760px) {
   .site-header {
     top: 10px;
@@ -1480,6 +1531,33 @@ body.dialog-open {
   }
 }
 
+@media (max-width: 420px) {
+  .hero__title {
+    font-size: clamp(2.65rem, 15vw, 4rem);
+  }
+
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+
+  .section__title {
+    font-size: clamp(1.9rem, 9vw, 2.6rem);
+  }
+
+  .project-card__body {
+    padding: 1.15rem;
+  }
+
+  .contact-link__icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .contact-link__value {
+    font-size: 0.62rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1494,7 +1572,17 @@ body.dialog-open {
     animation-iteration-count: 1 !important;
   }
 
-  .btn:hover {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .orb {
+    transform: none !important;
+  }
+
+  .btn:hover,
+  .contact-link:hover {
     transform: none;
   }
 }
