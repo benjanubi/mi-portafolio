@@ -134,9 +134,82 @@
     });
   }
 
+  function copyText(text) {
+    if (!text) return Promise.resolve(false);
+
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      return navigator.clipboard.writeText(text).then(
+        function () {
+          return true;
+        },
+        function () {
+          return legacyCopy(text);
+        }
+      );
+    }
+
+    return Promise.resolve(legacyCopy(text));
+  }
+
+  function legacyCopy(text) {
+    if (typeof document === "undefined" || !document.body) return false;
+
+    const field = document.createElement("textarea");
+    field.value = text;
+    field.setAttribute("readonly", "");
+    field.style.position = "fixed";
+    field.style.top = "-9999px";
+    field.style.left = "-9999px";
+    document.body.appendChild(field);
+    field.select();
+
+    let copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } catch (error) {
+      copied = false;
+    }
+
+    document.body.removeChild(field);
+    return copied;
+  }
+
+  function initCopyEmail() {
+    const button = document.querySelector("[data-copy-email]");
+    const status = document.querySelector("[data-copy-status]");
+    if (!button) return;
+
+    const email = "benjavalenz36@gmail.com";
+    let resetTimer = 0;
+
+    button.addEventListener("click", function () {
+      copyText(email).then(function (copied) {
+        window.clearTimeout(resetTimer);
+
+        if (status) {
+          status.textContent = copied
+            ? "Correo copiado al portapapeles"
+            : "No se pudo copiar. Escríbelo manualmente.";
+          status.dataset.state = copied ? "success" : "error";
+        }
+
+        button.textContent = copied ? "Correo copiado" : "No se pudo copiar";
+
+        resetTimer = window.setTimeout(function () {
+          button.textContent = "Copiar correo";
+          if (status) {
+            status.textContent = "";
+            delete status.dataset.state;
+          }
+        }, 3200);
+      });
+    });
+  }
+
   function init() {
     document.documentElement.classList.add("js");
     initProjectDialogs();
+    initCopyEmail();
   }
 
   if (typeof document !== "undefined") {
@@ -148,6 +221,6 @@
   }
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { PROJECTS, getProject };
+    module.exports = { PROJECTS, getProject, copyText };
   }
 })();

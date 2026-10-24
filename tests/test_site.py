@@ -161,6 +161,52 @@ class SiteStructureTests(unittest.TestCase):
         )
         self.assertIn("project-dialog", page.ids)
 
+    def test_contact_links_and_brand_colors(self):
+        page = load_page()
+        hrefs = {link.get("href", "") for link in page.links}
+        self.assertIn("mailto:benjavalenz36@gmail.com", hrefs)
+        self.assertIn("https://github.com/benjanubi", hrefs)
+        self.assertIn(
+            "https://www.linkedin.com/in/benjam%C3%ADn-valenzuela-mu%C3%B1oz-a666a53a8",
+            hrefs,
+        )
+        self.assertIn("https://wa.me/56971383760", hrefs)
+        self.assertIn("+56 9 7138 3760", page.text)
+        self.assertIn("Diseñado y desarrollado por Benjamín Valenzuela", page.text)
+        self.assertIn("San Carlos, Chile", page.text)
+        external = [
+            link
+            for link in page.links
+            if link.get("href", "").startswith("https://")
+            and (
+                "github.com" in link["href"]
+                or "linkedin.com" in link["href"]
+                or "wa.me" in link["href"]
+            )
+        ]
+        self.assertEqual(len(external), 3)
+        for link in external:
+            self.assertEqual(link.get("target"), "_blank")
+            self.assertIn("noopener", link.get("rel", ""))
+
+    def test_brand_colors_and_copy_fallback(self):
+        css = CSS.read_text(encoding="utf-8").lower()
+        for token in [
+            "--gmail: #ea4335",
+            "--github: #ffffff",
+            "--linkedin: #0a66c2",
+            "--whatsapp: #25d366",
+        ]:
+            self.assertIn(token, css)
+        js = JS.read_text(encoding="utf-8")
+        self.assertIn("navigator.clipboard", js)
+        self.assertIn("execCommand", js)
+
+    def test_no_placeholder_content(self):
+        html = INDEX.read_text(encoding="utf-8").lower()
+        for placeholder in ["tu-correo", "ejemplo.com", "lorem ipsum", "todo:", "tbd"]:
+            self.assertNotIn(placeholder, html)
+
 
 if __name__ == "__main__":
     unittest.main()
