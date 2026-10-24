@@ -6,6 +6,57 @@
       ? window.matchMedia("(prefers-reduced-motion: reduce)")
       : { matches: false };
 
+  function parseISODate(value) {
+    const parts = String(value || "").trim().split("-");
+    if (parts.length !== 3) return null;
+
+    const year = Number(parts[0]);
+    const month = Number(parts[1]);
+    const day = Number(parts[2]);
+    if (!Number.isInteger(year) || !Number.isInteger(month) || !Number.isInteger(day)) {
+      return null;
+    }
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+
+    const date = new Date(year, month - 1, day);
+    if (
+      date.getFullYear() !== year ||
+      date.getMonth() !== month - 1 ||
+      date.getDate() !== day
+    ) {
+      return null;
+    }
+    return date;
+  }
+
+  function calculateAge(birthDate, today) {
+    const birth =
+      typeof birthDate === "string" ? parseISODate(birthDate) : birthDate;
+    const current = today instanceof Date ? today : new Date();
+
+    if (
+      !(birth instanceof Date) ||
+      Number.isNaN(birth.getTime()) ||
+      Number.isNaN(current.getTime())
+    ) {
+      return null;
+    }
+
+    let age = current.getFullYear() - birth.getFullYear();
+    const beforeBirthday =
+      current.getMonth() < birth.getMonth() ||
+      (current.getMonth() === birth.getMonth() &&
+        current.getDate() < birth.getDate());
+
+    if (beforeBirthday) age -= 1;
+    return age;
+  }
+
+  function formatYear(date) {
+    const value = date instanceof Date ? date : new Date();
+    return String(value.getFullYear());
+  }
+
   const PROJECTS = {
     "cosecha-berries": {
       title: "cosecha_berries",
@@ -369,8 +420,26 @@
     );
   }
 
+  function initDynamicFacts() {
+    const birthdate =
+      document.body.getAttribute("data-birthdate") || "2006-02-16";
+    const age = calculateAge(birthdate, new Date());
+
+    if (age !== null) {
+      document.querySelectorAll("[data-age]").forEach(function (node) {
+        node.textContent = String(age);
+      });
+    }
+
+    const year = formatYear(new Date());
+    document.querySelectorAll("[data-year]").forEach(function (node) {
+      node.textContent = year;
+    });
+  }
+
   function init() {
     document.documentElement.classList.add("js");
+    initDynamicFacts();
     initHeader();
     initNavObserver();
     initReveal();
@@ -389,6 +458,12 @@
   }
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { PROJECTS, getProject, copyText };
+    module.exports = {
+      PROJECTS,
+      getProject,
+      copyText,
+      calculateAge,
+      formatYear,
+    };
   }
 })();
