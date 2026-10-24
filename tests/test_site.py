@@ -102,6 +102,28 @@ class SiteStructureTests(unittest.TestCase):
         ]:
             self.assertIn(token, css)
 
+    def test_about_and_skills_content(self):
+        text = load_page().text
+        for phrase in [
+            "Sobre mí",
+            "Benjamín Ignacio Valenzuela Muñoz",
+            "Ayudante",
+            "Álgebra Lineal",
+            "Staff en evento universitario",
+            "Arch Linux",
+            "Hyprland",
+            "KDE Plasma",
+            "i3wm",
+            "Ubuntu",
+            "antiX",
+            "Linux Mint XFCE",
+            "Tkinter",
+            "ReportLab",
+            "Firebase",
+            "Excel",
+        ]:
+            self.assertIn(phrase, text)
+
 
 if __name__ == "__main__":
     unittest.main()
