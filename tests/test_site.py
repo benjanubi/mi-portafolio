@@ -124,6 +124,43 @@ class SiteStructureTests(unittest.TestCase):
         ]:
             self.assertIn(phrase, text)
 
+    def test_projects_content_and_dialog(self):
+        page = load_page()
+        for value in [
+            "cosecha_berries",
+            "Diciembre 2025",
+            "Mis Notas",
+            "Enero 2026",
+            "Mermas McDonald's",
+            "Febrero 2026",
+            "Generador de Horarios",
+            "Marzo 2026",
+            "Ale Sushi",
+            "SebTech",
+            "El Rey del Ahorro",
+            "LUK'S Crepería",
+            "Ágape Restobar",
+            "Tasty Food Chillán",
+            "Superbikers",
+        ]:
+            self.assertIn(value, page.text)
+        project_ids = {
+            attrs.get("data-project-id")
+            for tag, attrs in page.tags
+            if tag == "button" and attrs.get("data-project-id")
+        }
+        self.assertEqual(
+            project_ids,
+            {
+                "cosecha-berries",
+                "mis-notas",
+                "mermas-mcdonalds",
+                "generador-horarios",
+                "prototipos-web",
+            },
+        )
+        self.assertIn("project-dialog", page.ids)
+
 
 if __name__ == "__main__":
     unittest.main()
